@@ -113,7 +113,7 @@
             align-items: center;
             color: var(--accent-color);
             gap: 20px;
-            overflow: hidden; /* Hide ECG overflow */
+             /* Hide ECG overflow */
         }
         
         #preloader-heart-container {
@@ -136,8 +136,8 @@
         
         #ecg-container {
             position: absolute;
-            width: 100vw;
-            height: 120px;
+            width: 150vw;
+            height: 170px;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
@@ -792,12 +792,13 @@
             
         #play-button {
             position: absolute;
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             color: var(--heading-color);
             opacity: 0.8;
             cursor: pointer;
             transition: opacity 0.3s ease, transform 0.3s ease;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.6));
         }
 
         #play-button:hover {
@@ -807,16 +808,16 @@
 
         #preloader-heart-container {
             position: relative;
-            width: 120px;
-            height: 120px;
+            width: 150px;
+            height: 150px;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
         #preloader-heart {
-            width: 100px;
-            height: 100px;
+            width: 130px;
+            height: 130px;
             color: var(--heart-color);
             filter: drop-shadow(0 0 10px var(--heart-color));
             opacity: 1; 
