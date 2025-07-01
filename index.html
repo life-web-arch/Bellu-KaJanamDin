@@ -143,14 +143,15 @@
             transform: translate(-50%, -50%);
             z-index: 1; /* Ensure it’s above the preloader background but below the heart */
         }
-        #ecg-line {
-            fill: none;
-            stroke: var(--accent-color);
-            stroke-width: 3;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            opacity: 0.6;
-        }
+              #ecg-line {
+              fill: none;
+              stroke: url(#ecg-gradient);
+              stroke-width: 3;
+              stroke-linecap: round;
+              stroke-linejoin: round;
+              opacity: 0.9;
+              filter: drop-shadow(0 0 10px #00ffe7);
+          }
         #ecg-container, .loader-text, #loader-progress {
             opacity: 0; /* Hidden initially */
             transition: opacity 0.3s ease;
@@ -171,8 +172,42 @@
             font-family: var(--font-creative);
             font-size: 1.3em;
             font-weight: 700;
-            color: var(--heading-color);
+            color: #FFD700; /* Golden text to match border */
+            text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
             opacity: 0;
+            /* Container styling */
+            background: rgba(27, 27, 46, 0.8); /* Slightly darker background */
+            border: 3px solid #FFD700;
+            border-radius: 50px;
+            padding: 15px 30px;
+            /* Multi-layer golden glow */
+            box-shadow: 
+                0 0 5px #FFD700,
+                0 0 15px #FFD700,
+                0 0 25px rgba(255, 215, 0, 0.6),
+                0 0 40px rgba(255, 215, 0, 0.3);
+            /* Smooth pulsating animation */
+            animation: goldenPulse 1.5s ease-in-out infinite alternate;
+        }
+
+        /* Enhanced glow animation */
+        @keyframes goldenPulse {
+            0% {
+                box-shadow: 
+                    0 0 5px #FFD700,
+                    0 0 15px #FFD700,
+                    0 0 25px rgba(255, 215, 0, 0.6),
+                    0 0 40px rgba(255, 215, 0, 0.3);
+                border-color: #FFD700;
+            }
+            100% {
+                box-shadow: 
+                    0 0 10px #FFD700,
+                    0 0 25px #FFD700,
+                    0 0 40px rgba(255, 215, 0, 0.8),
+                    0 0 60px rgba(255, 215, 0, 0.4);
+                border-color: #FFD700; /* Slightly brighter gold at peak */
+            }
         }
 
         /* --- Custom Cursor --- */
@@ -196,16 +231,20 @@
         }
 
         /* --- Floating Hearts Background --- */
-        #hearts-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
-            overflow: hidden;
-        }
+        /* REPLACE this entire rule in your CSS */
+/* REPLACE this entire rule in your CSS */
+#hearts-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1; /* Place it behind the main content but above the aurora */
+    pointer-events: none; /* Allows clicks to pass through the container's empty space */
+    overflow: hidden;
+}
+
+
         
         @keyframes heartGlowPulse {
             0%, 100% {
@@ -221,6 +260,7 @@
             width: 40px; 
             height: 40px;
             animation: heartGlowPulse 3s ease-in-out infinite;
+            pointer-events: all;
         }
         .heart-particle::before, .heart-particle::after {
             content: '';
@@ -238,6 +278,110 @@
             left: 0;
             transform: rotate(45deg);
             transform-origin: 100% 100%;
+        }
+
+        /* --- NEW: Floating Balloon Styles --- */
+        /* REPLACE this entire rule in your CSS */
+.balloon-particle {
+    position: absolute;
+    display: flex; /* Added for centering text */
+    justify-content: center; /* Added for centering text */
+    align-items: center; /* Added for centering text */
+    width: 80px;
+    height: 100px;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.7), transparent), var(--balloon-color, #ff5050);
+    pointer-events: auto; /* <-- FIX: Changed from all to auto for correctness */
+    cursor: pointer;
+    z-index: 1;
+    filter: drop-shadow(0 10px 8px rgba(0,0,0,0.3));
+    transform-origin: bottom center;
+}
+
+
+        /* Balloon tie */
+        .balloon-particle::after {
+            content: '';
+            position: absolute;
+            bottom: -8px; /* Position at the bottom */
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 12px solid var(--balloon-color, #ff5050);
+            transform: translateX(-50%);
+            filter: brightness(0.8);
+        }
+
+        /* Balloon color variations */
+        .balloon-particle.red { --balloon-color: #ff5252; }
+        .balloon-particle.blue { --balloon-color: #448aff; }
+        .balloon-particle.green { --balloon-color: #69f0ae; }
+        .balloon-particle.yellow { --balloon-color: #ffd600; }
+        .balloon-particle.purple { --balloon-color: #e040fb; }
+        .balloon-particle.orange { --balloon-color: #ffab40; }
+        /* ADD this new rule to your CSS */
+.balloon-text {
+    font-family: var(--font-creative);
+    font-size: 24px;
+    font-weight: 700;
+    color: rgba(26, 26, 46, 0.7); /* Dark, marker-like color */
+    transform: rotate(-15deg);
+    user-select: none; /* Prevents text selection */
+}
+
+
+
+        /* --- NEW: Birthday Celebration Play Button --- */
+        #celebration-play-btn {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            z-index: 10001;
+            display: none; /* Hidden by default */
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            opacity: 0;
+            cursor: pointer;
+            background: rgba(27, 27, 46, 0.7);
+            padding: 30px;
+            border-radius: 25px;
+            backdrop-filter: blur(10px);
+            border: 2px solid var(--accent-color);
+            box-shadow: 0 0 25px rgba(224, 64, 251, 0.3), 0 0 40px rgba(252, 127, 3, 0.15);
+            animation: glowPulse 4s ease-in-out infinite;
+        }
+
+        #celebration-play-btn .icon {
+            width: 80px;
+            height: 80px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+        #celebration-play-btn:hover .icon {
+            transform: scale(1.1);
+            background: var(--accent-color-dark);
+        }
+
+        #celebration-play-btn svg {
+            width: 45px;
+            height: 45px;
+            fill: white;
+            margin-left: 5px;
+        }
+
+        #celebration-play-btn .text {
+            font-family: var(--font-creative);
+            font-size: 1.8em;
+            color: white;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
         }
         
         /* --- General Layout & Typography --- */
@@ -521,6 +665,8 @@
             color: var(--heading-color);
             transition: opacity 0.4s ease;
         }
+        
+        /* --- MODIFIED: ENHANCED BUTTON & BUBBLE STYLES --- */
         #new-reason-btn {
             background-color: var(--accent-color);
             color: white;
@@ -532,13 +678,54 @@
             font-weight: 600;
             font-size: 1.1em;
             margin-top: 20px;
+            position: relative; /* Prerequisite for positioning child elements */
+            overflow: hidden;   /* Keeps bubbles within the button bounds */
+            -webkit-tap-highlight-color: transparent; /* Removes tap highlight on mobile */
+            
+            /* This is the line that enables the liquid/watery effect */
+            filter: url(#liquid-goo);
         }
-        #new-reason-btn:hover {
+
+        #new-reason-btn:hover:not(:disabled) {
             background-color: var(--accent-color-dark);
             transform: translateY(-3px);
         }
-        #new-reason-btn:active {
+
+        #new-reason-btn:active:not(:disabled) {
             transform: translateY(0) scale(0.95);
+        }
+
+        #new-reason-btn:disabled {
+            cursor: not-allowed;
+            filter: brightness(0.8) url(#liquid-goo); /* Keep filter when disabled */
+        }
+
+        /* This is the new style for the water bubbles */
+        .cooldown-blob {
+            position: absolute;
+            /* Start at the bottom center, just outside the button */
+            bottom: -20px; 
+            left: 50%;
+            
+            /* Base size; will be randomized in JS */
+            width: 30px; 
+            height: 30px;
+
+            /* Bubble appearance using a radial gradient for a 3D look */
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.3) 60%, rgba(0, 150, 255, 0.5) 100%);
+            
+            border-radius: 50%;
+            pointer-events: none;
+            
+            /* A subtle border to help with definition against the goo effect */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            
+            /* A faint glow to enhance the bubble effect */
+            box-shadow: inset 0 0 8px rgba(255, 255, 255, 0.4), 0 0 12px rgba(100, 200, 255, 0.5);
+            
+            /* Set transform origins and initial state */
+            transform-origin: center center;
+            transform: translate(-50%, 0) scale(0);
         }
 
         .music-player {
@@ -824,15 +1011,121 @@
             transform-origin: center center;
         }
 
+
+        /* ADD THIS CSS for the Truth Surprise Sequence */
+        #truth-overlay.visible {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .rainbow-balloon {
+            position: absolute;
+            bottom: -300px; /* Start off-screen */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 260px;
+            background-image: url('https://i.ibb.co/fK0ZtJT/balloon.png'); /* Using a hosted image for simplicity */
+            background-size: contain;
+            background-repeat: no-repeat;
+            cursor: pointer;
+            filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.5));
+            will-change: transform;
+            z-index: 10005;
+        }
+
+        #truth-cancel-btn {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid white;
+            background: rgba(0,0,0,0.5);
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 10005;
+            opacity: 0;
+            transform: scale(0);
+            transition: transform 0.3s, background 0.3s;
+        }
+
+        #truth-cancel-btn:hover {
+            transform: scale(1.1) rotate(90deg);
+            background: var(--heart-color);
+        }
+
+        .truth-word {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            font-family: var(--font-creative);
+            font-size: 8em;
+            color: white;
+            text-shadow: 0 0 20px var(--accent-color);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 10004;
+        }
+        #word-i     { font-size: 5em; }
+        #word-lubhh { font-size: 3em; }
+        #word-booh  { font-size: 3.5em; }
+
+        /* For dripping effect on the canvas text */
+        @keyframes drip {
+            to {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+        }
+        /* ADD THIS CSS for the Truth Surprise Sequence */
+        #truth-overlay.visible {
+            opacity: 1;
+            pointer-events: all;
+        }
+        /* ADD these new rules to your CSS */
+#content-wrapper {
+    /* This makes the entire content area transparent to clicks by default */
+    pointer-events: none;
+}
+
+/* This re-enables clicks ONLY for the direct children holding your UI */
+#content-wrapper > header,
+#content-wrapper > main,
+#content-wrapper > footer {
+    pointer-events: auto;
+}
+
+
+
     </style>
 </head>
 <body>
-  
+    <svg style="position: absolute; width: 0; height: 0;">
+      <defs>
+        <filter id="liquid-goo">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+          <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 21 -9" result="goo" />
+          <feComposite in="SourceGraphic" in2="goo" operator="atop"/>
+        </filter>
+      </defs>
+    </svg>
+
     <div id="scroll-progress-bar"></div>
     <div id="page-scroll-tracker"></div>
     <div id="aurora-background"></div>
     <div id="hearts-container"></div>
     <div id="custom-cursor"></div>
+
+    <div id="celebration-play-btn">
+        <div class="icon">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+        <div class="text">Start Celebration!</div>
+    </div>
 
     <div id="preloader">
         <div id="preloader-heart-container">
@@ -843,11 +1136,15 @@
                 <path d="M8 5v14l11-7z"/>
             </svg>
         </div>
-        <svg id="ecg-container" viewBox="0 0 400 120" preserveAspectRatio="xMidYMid slice">
+        <svg id="ecg-container" viewBox="0 0 400 120" preserveAspectRatio="xMidYMid meet">
             <defs>
                 <clipPath id="ecg-mask">
                     <rect id="ecg-mask-rect" x="-400" y="0" width="400" height="120" />
                 </clipPath>
+                <linearGradient id="ecg-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" style="stop-color:#00ffe7; stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#00ff87; stop-opacity:1" />
+                </linearGradient>
             </defs>
             <path id="ecg-path" d="M -80,20 H 130 L 150,0 L 170,55 L 180,15 L 190,25 L 210,20 H 420" />
             <g clip-path="url(#ecg-mask)">
@@ -953,9 +1250,20 @@
         </div>
     </div>
 
+    <div id="pop-sounds" style="display: none;"></div>
+    <audio id="celebration-audio" loop></audio>
+
     <audio id="audio-player" crossOrigin="anonymous"></audio>
 
+    <div id="truth-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10002; backdrop-filter: blur(8px); background: rgba(26, 26, 46, 0.5); opacity: 0; pointer-events: none;">
+        <canvas id="truth-text-canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none;"></canvas>
+        <div id="word-i" class="truth-word">I</div>
+        <div id="word-lubhh" class="truth-word">Lubhh💞</div>
+        <div id="word-booh" class="truth-word">Booh🫵🏼</div>
+        <button id="truth-cancel-btn" style="display: none;">X</button>
+    </div>
     <script>
+
     // =================================================================================
     // --- FORMSPREE CONFIGURATION ---
     // =================================================================================
@@ -972,7 +1280,7 @@
         const CONFIG = {
             herName: "Priya",
             yourName: "Rohan",
-            birthday: { month: 7, day: 4, year: 2025, time: "00:00:00" },
+            birthday: { month: 7, day: 1, year: 2025, time: "00:00:00" },
             headerSubtitle: "To the one who illuminates my Universe...",
             message: {
                 heading: "A Message From My Heart",
@@ -994,22 +1302,122 @@
                 { src: "assets/images/photo6.jpg", alt: "Memory 6", caption: "The day we brought our puppy home." }
             ],
             reasons: [
-                "because of the way you laugh at my silly jokes.",
-                "for your kindness to everyone you meet.",
-                "because you make me feel like I can achieve anything.",
-                "for the way your eyes light up when you talk about your passions.",
-                "because you make the ordinary moments feel extraordinary.",
-                "for always knowing how to comfort me.",
-                "because you're the most intelligent person I know.",
-                "for being my partner in every sense of the word.",
-                "because of your incredible strength and resilience.",
-                "for loving me for exactly who I am."
+                "because of the way your eyes sparkle when you smile.",
+                "for your infectious, wholehearted laugh.",
+                "because you make me feel safe and cherished.",
+                "for your incredible intelligence and sharp wit.",
+                "because you challenge me to be a better person.",
+                "for your unwavering kindness to everyone you meet.",
+                "because you can make a gourmet meal out of anything.",
+                "for the way you hum when you're concentrating.",
+                "because you always know how to cheer me up.",
+                "for your passion for the things you love.",
+                "because you are my biggest supporter and fan.",
+                "for your strength and resilience in tough times.",
+                "because you have the most beautiful soul.",
+                "for the way you look at me like I'm the only person in the world.",
+                "because you make ordinary moments feel extraordinary.",
+                "for our late-night talks about everything and nothing.",
+                "because you are fiercely loyal to the people you love.",
+                "for your adventurous spirit and love for exploring.",
+                "because you have a cute little wrinkle on your nose when you're confused.",
+                "for being my partner-in-crime and my best friend.",
+                "because you see the good in everyone.",
+                "for the way you dance when you think no one is watching.",
+                "because you are patient and understanding.",
+                "for your impeccable taste in movies and music.",
+                "because you make me believe in myself.",
+                "for your gentle touch that calms my soul.",
+                "because you remember the little things.",
+                "for your ambition and drive to achieve your dreams.",
+                "because you are unapologetically yourself.",
+                "for the comforting feeling of your hugs.",
+                "because you are my calm in the middle of a storm.",
+                "for your creativity and the beautiful things you create.",
+                "for being the most honest person I know.",
+                "because you make me laugh until my stomach hurts.",
+                "for the way you care for animals and nature.",
+                "because you are endlessly fascinating to me.",
+                "for your ability to forgive and not hold grudges.",
+                "because you are my favorite person to do nothing with.",
+                "for the thoughtful advice you always give.",
+                "because you are generous with your love and time.",
+                "for the way you light up any room you enter.",
+                "because you are my home.",
+                "for your endless curiosity about the world.",
+                "because you have the courage to stand up for what's right.",
+                "for making me feel more alive than anyone else.",
+                "for your adorable sleepy face in the morning.",
+                "because you share your dreams and fears with me.",
+                "for your optimistic outlook on life.",
+                "for the way you can fix almost anything.",
+                "because you are the missing piece to my puzzle.",
+                "for being so wonderfully weird, just like me.",
+                "because you listen, truly listen, when I talk.",
+                "for your grace and elegance.",
+                "because you are as beautiful on the inside as you are on the outside.",
+                "for the memories we've already made and the ones to come.",
+                "because you always give the best back scratches.",
+                "for your dedication to your family and friends.",
+                "because you are my sunshine on a cloudy day.",
+                "for your incredible sense of direction (unlike me!).",
+                "because you know my coffee order by heart.",
+                "for the feeling of your hand in mine.",
+                "because you are my greatest adventure.",
+                "for your ability to make me see things from a new perspective.",
+                "for your cute sneezes.",
+                "because you're not afraid to be silly with me.",
+                "for the way you care about my day.",
+                "because every day with you is a gift.",
+                "for your warmth that melts away my worries.",
+                "because you have a heart of pure gold.",
+                "for the little inside jokes we share.",
+                "because you love me, flaws and all.",
+                "for your confidence and how it inspires me.",
+                "because you are my anchor in a wild sea.",
+                "for the way you look when you're reading a book.",
+                "because you make me feel understood without saying a word.",
+                "for your incredible work ethic.",
+                "because you make me feel like the luckiest person alive.",
+                "for your smell, it feels like home.",
+                "because you are my favorite travel companion.",
+                "for the little notes you leave for me.",
+                "because you are my inspiration.",
+                "for the way you sing along to the radio, even when you don't know the words.",
+                "because you make me a part of your future.",
+                "for your thoughtful and meaningful gifts.",
+                "because you never give up on me.",
+                "because you are my person, forever and always.",
+                "for being the calm, steady presence in my life.",
+                "because you know how to make me a priority.",
+                "for your incredible patience with my quirks.",
+                "because your smile is the most beautiful thing I've ever seen.",
+                "for your ability to find beauty in the simplest things.",
+                "because life with you is never boring.",
+                "for your protective nature over the ones you love.",
+                "because you make me feel cherished and adored.",
+                "for your endless capacity for love.",
+                "because you are, quite simply, everything to me."
             ],
             playlist: [
                 { title: "Perfect", artist: "Ed Sheeran", src: "assets/audio/song1.mp3", art: "assets/images/photo1.jpg" },
                 { title: "A Thousand Years", artist: "Christina Perri", src: "assets/audio/song2.mp3", art: "assets/images/photo2.jpg" },
                 { title: "All of Me", artist: "John Legend", src: "assets/audio/song3.mp3", art: "assets/images/photo3.png" }
             ],
+            // --- NEW: Celebration Assets ---
+            // In the CONFIG object, inside the celebration: { ... } block
+
+celebration: {
+    song: "https://cdn.pixabay.com/audio/2022/08/04/audio_2911a06d50.mp3", 
+    popSounds: [
+        "https://cdn.pixabay.com/audio/2021/08/04/audio_bb630cc098.mp3",
+        "https://cdn.pixabay.com/audio/2022/03/15/audio_73ed8c1a17.mp3",
+        "https://cdn.pixabay.com/audio/2021/08/04/audio_c3592a832a.mp3"
+    ],
+    // --- ADD THIS ARRAY ---
+    nicknames: ["Cutu Putu", "Shreyuu", "Bellu", "Baby", "Babes", "Yaar", "Wifey", "Ghumlu", "My Love", "Sunshine"]
+},
+
             footerText: "Crafted with LOVE ❤‍🔥, Code 👨🏻‍💻, and Countless Glasses of Water 🚰 for you 𝙎𝙃𝙍𝙀𝙔𝙐𝙐︎ 💞           ©2025"
         };
 
@@ -1021,6 +1429,7 @@
         window.App = {
             state: {
                 isBirthday: false,
+                isCelebrationActive: false, // NEW: Track if the mass celebration is running
                 wishes: [], // To hold wishes locally
                 gallery: { data: [], currentIndex: 0 },
                 playlist: { 
@@ -1034,6 +1443,10 @@
                 },
                 countdownInterval: null,
                 preloaderTimeline: null,
+                reasonsPool: [],
+                reasonClickCount: 0,
+                popSoundPlayers: [], // NEW: Pool of audio players for pop sounds
+                popSoundIndex: 0 // NEW: To cycle through the sound players
             },
             elements: {},
             
@@ -1049,7 +1462,7 @@
             start() {
                 this.populateTextContent();
                 this.Content.setupDynamicContent();
-                this.Content.loadWishesFromLocalStorage(); // Load wishes on start
+                this.Content.loadWishesFromLocalStorage();
                 this.Content.setupGallery();
                 this.Content.setupJourneyTimeline();
                 this.Content.setupReasonsGenerator();
@@ -1110,6 +1523,12 @@
                         progressContainer: document.querySelector('.progress-container'),
                         visualizer: document.getElementById('audio-visualizer'),
                     },
+                    // --- NEW: Celebration Elements ---
+                    celebration: {
+                        playBtn: document.getElementById('celebration-play-btn'),
+                        audioPlayer: document.getElementById('celebration-audio'),
+                        popSoundsContainer: document.getElementById('pop-sounds')
+                    }
                 };
             },
             
@@ -1131,7 +1550,13 @@
             },
 
             UI: {
-                init() { this.initCustomCursor(); this.initHeartParticles(); },
+                init() {
+                    this.initCustomCursor();
+                    this.initHeartParticles();
+                    if(App.state.isBirthday) {
+                        App.Celebration.preloadPopSounds();
+                    }
+                },
                 
                 setupEventListeners() {
                     App.elements.modal.closeBtn.addEventListener('click', () => this.closeModal());
@@ -1142,10 +1567,19 @@
                         this.handleWishSubmit(e); 
                     });
                     App.elements.newReasonBtn.addEventListener('click', () => App.Content.generateNewReason());
-                    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && App.elements.modal.container.style.display === 'flex') { this.closeModal(); } });
+                    // --- NEW: Event listener for the celebration play button ---
+                    App.elements.celebration.playBtn.addEventListener('click', () => App.Celebration.startMassCelebration(), { once: true });
+                    
+                    document.addEventListener('keydown', (e) => {
+                        if (e.key === 'Escape' && App.elements.modal.container.style.display === 'flex') {
+                            this.closeModal();
+                        }
+                    });
                     
                     document.addEventListener('click', (e) => {
-                        if (e.target.closest('a, button, input, .photo-item, .timeline-content, .progress-container')) return;
+                        // Prevent click burst if a balloon or other interactive element was clicked
+                        if (e.target.closest('a, button, input, .photo-item, .timeline-content, .progress-container, .wish-bubble, .heart-particle, .balloon-particle')) return;
+                        
                         const clickX = e.clientX;
                         const clickY = e.clientY;
                         const pushRadius = 150;
@@ -1178,12 +1612,16 @@
                 initCustomCursor() {
                     const cursor = document.getElementById('custom-cursor');
                     if (window.matchMedia("(pointer: fine)").matches) {
-                        window.addEventListener('mousemove', e => { gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.2, ease: 'power2.out' }); });
-                        document.querySelectorAll('a, button, .photo-item, .timeline-content, .progress-container, input, .wish-bubble').forEach(el => {
+                        window.addEventListener('mousemove', e => {
+                            gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.2, ease: 'power2.out' });
+                        });
+                        document.querySelectorAll('a, button, .photo-item, .timeline-content, .progress-container, input, .wish-bubble, .balloon-particle').forEach(el => {
                             el.addEventListener('mouseenter', () => cursor.classList.add('expand'));
                             el.addEventListener('mouseleave', () => cursor.classList.remove('expand'));
                         });
-                    } else { cursor.style.display = 'none'; }
+                    } else {
+                        cursor.style.display = 'none';
+                    }
                 },
 
                 initHeartParticles() {
@@ -1199,14 +1637,71 @@
                         heart.style.setProperty('--particle-heart-color-glow-2', color + '55');
                         gsap.set(heart, { width: size, height: size, x: `${Math.random() * 100}vw`, y: `105vh`, opacity: Math.random() * 0.5 + 0.3 });
                         this.animateHeartFloat(heart);
-                        gsap.to(heart, { scale: 1.2, duration: Math.random() * 1 + 1.5, repeat: -1, yoyo: true, ease: 'sine.inOut', delay: Math.random() * 2 });
+                        gsap.to(heart, { scale: 1.5, duration: Math.random() * 1 + 1.5, repeat: -1, yoyo: true, ease: 'sine.inOut', delay: Math.random() * 2 });
                         container.appendChild(heart);
                     }
                 },
+                
+                // --- NEW: Balloon Particle Creator ---
+                // REPLACE this entire function in your script
+createBalloonParticle() {
+    const container = document.getElementById('hearts-container');
+    const balloon = document.createElement('div');
+    balloon.classList.add('balloon-particle');
+
+    // --- NEW: Logic to add nickname text ---
+    const nicknames = CONFIG.celebration.nicknames;
+    if (nicknames && nicknames.length > 0) {
+        const textElement = document.createElement('span');
+        textElement.className = 'balloon-text';
+        // Pick a random name from the list
+        textElement.textContent = nicknames[Math.floor(Math.random() * nicknames.length)];
+        balloon.appendChild(textElement);
+    }
+    // --- End of new logic ---
+
+    const colors = ['red', 'blue', 'green', 'yellow', 'purple', 'orange'];
+    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+    balloon.classList.add(randomColor);
+    
+    const size = gsap.utils.random(80, 120); // Made balloons slightly bigger for text
+    const startX = gsap.utils.random(5, 95) + 'vw';
+    const drift = gsap.utils.random(-15, 15) + 'vw';
+
+    gsap.set(balloon, {
+        width: size,
+        height: size * 1.25,
+        x: startX,
+        y: '110vh'
+    });
+    
+    container.appendChild(balloon);
+
+    balloon.addEventListener('click', (e) => App.Celebration.handleBalloonPop(e.currentTarget), { once: true });
+
+    gsap.to(balloon, {
+        y: '-120vh',
+        x: `+=${drift}`,
+        rotation: gsap.utils.random(-30, 30),
+        duration: gsap.utils.random(10, 18),
+        ease: 'none',
+        onComplete: () => balloon.remove()
+    });
+    
+    gsap.to(balloon, {
+        rotation: `+=${gsap.utils.random(20, 40) * (Math.random() > 0.5 ? 1 : -1)}`,
+        duration: gsap.utils.random(2, 4),
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut'
+    });
+},
+
                 animateHeartFloat(heart) {
                     const duration = Math.random() * 15 + 20;
                     gsap.to(heart, { y: '-10vh', rotation: 'random(-360, 360)', duration: duration, ease: 'none', onComplete: () => { this.recycleHeart(heart); } });
                 },
+
                 recycleHeart(heart) {
                     gsap.killTweensOf(heart, "x,rotation");
                     const size = Math.random() * 30 + 15;
@@ -1214,6 +1709,7 @@
                     this.animateHeartFloat(heart);
                     gsap.to(heart, { scale: 1.2, duration: Math.random() * 1 + 1.5, repeat: -1, yoyo: true, ease: 'sine.inOut', delay: Math.random() * 2 });
                 },
+
                 createClickBurst(x, y) {
                     const container = document.getElementById('hearts-container');
                     const heartColors = ['#ff4081', '#ff80ab', '#f50057', '#ff5252', '#ff1744'];
@@ -1263,7 +1759,7 @@
                     statusEl.textContent = 'Sending...';
                     statusEl.style.color = 'var(--accent-color)';
                     
-                    fetch(form.action, { // Use the form's action attribute
+                    fetch(form.action, {
                         method: 'POST',
                         body: data,
                         headers: { 'Accept': 'application/json' }
@@ -1384,8 +1880,8 @@
                         headers: { 'Accept': 'application/json' }
                     }).catch(err => console.error('Could not notify of deletion.', err));
                 }
-
             },
+
             Content: {
                 loadWishesFromLocalStorage() {
                     const savedWishes = localStorage.getItem('userWishes');
@@ -1403,23 +1899,34 @@
 
                 setupDynamicContent() {
                     if (App.state.isBirthday) {
-                        App.elements.mainHeading.textContent = `Happy Birthday, My Dearest ${CONFIG.herName}!`;
+                        App.elements.mainHeading.textContent = `Happy 18th Birthday, My Dearest ${CONFIG.herName}!`;
                         App.elements.dynamicSection.innerHTML = `<div id="birthday-message"><h2>Today is YOUR day!</h2><p style="text-align:center; font-size:1.2em;">Wishing you all the happiness in the universe. Let's celebrate! Balle balleeh yaayyy 🥳🎉</p></div>`;
                     } else {
                         App.elements.mainHeading.textContent = `Countdown for My Dearest ${CONFIG.herName}`;
                         App.elements.dynamicSection.innerHTML = `<h2>Countdown to Your Special Day</h2><div id="countdown"><div><span id="days" class="value">00</span><span class="label">Days</span></div><div><span id="hours" class="value">00</span><span class="label">Hours</span></div><div><span id="minutes" class="value">00</span><span class="label">Minutes</span></div><div><span id="seconds" class="value">00</span><span class="label">Seconds</span></div><div><span id="milliseconds" class="value">000</span><span class="label">Milliseconds</span></div></div>`;
                     }
                 },
+
                 startCountdown() {
                     if (App.state.isBirthday) return;
                     const { month, day, year, time } = CONFIG.birthday;
                     const countDate = new Date(`${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}T${time}`).getTime();
-                    const els = { days: document.getElementById('days'), hours: document.getElementById('hours'), minutes: document.getElementById('minutes'), seconds: document.getElementById('seconds'), milliseconds: document.getElementById('milliseconds') };
+                    const els = {
+                        days: document.getElementById('days'),
+                        hours: document.getElementById('hours'),
+                        minutes: document.getElementById('minutes'),
+                        seconds: document.getElementById('seconds'),
+                        milliseconds: document.getElementById('milliseconds')
+                    };
                     if (!els.days) return;
                     function update() {
                         const now = new Date().getTime();
                         const gap = countDate - now;
-                        if (gap <= 0) { cancelAnimationFrame(App.state.countdownInterval); location.reload(); return; }
+                        if (gap <= 0) {
+                            cancelAnimationFrame(App.state.countdownInterval);
+                            location.reload();
+                            return;
+                        }
                         els.days.innerText = Math.floor(gap / 86400000).toString().padStart(2, '0');
                         els.hours.innerText = Math.floor((gap % 86400000) / 3600000).toString().padStart(2, '0');
                         els.minutes.innerText = Math.floor((gap % 3600000) / 60000).toString().padStart(2, '0');
@@ -1429,6 +1936,7 @@
                     }
                     update();
                 },
+
                 setupGallery() {
                     App.state.gallery.data = CONFIG.gallery;
                     const grid = App.elements.photoGrid;
@@ -1443,16 +1951,19 @@
                         grid.appendChild(item);
                     });
                 },
+
                 showPrevImage() {
                     const len = App.state.gallery.data.length;
                     App.state.gallery.currentIndex = (App.state.gallery.currentIndex - 1 + len) % len;
                     App.UI.updateModalContent();
                 },
+
                 showNextImage() {
                     const len = App.state.gallery.data.length;
                     App.state.gallery.currentIndex = (App.state.gallery.currentIndex + 1) % len;
                     App.UI.updateModalContent();
                 },
+
                 setupJourneyTimeline() {
                     const container = App.elements.journeyContainer;
                     container.innerHTML = '';
@@ -1471,17 +1982,120 @@
                         container.appendChild(timelineItem);
                     });
                 },
-                setupReasonsGenerator() { this.generateNewReason(); },
+
+                setupReasonsGenerator() {
+                    App.state.reasonsPool = [...CONFIG.reasons];
+                    App.state.reasonsPool.sort(() => Math.random() - 0.5);
+                    App.state.reasonClickCount = 0;
+                },
+
+                // --- MODIFIED: generateNewReason with watery visuals ---
                 generateNewReason() {
-                    const reason = CONFIG.reasons[Math.floor(Math.random() * CONFIG.reasons.length)];
+                    const btn = App.elements.newReasonBtn;
                     const textEl = App.elements.reasonText;
-                    gsap.to(textEl, { opacity: 0, duration: 0.3, onComplete: () => { textEl.textContent = `...${reason}`; gsap.to(textEl, { opacity: 1, duration: 0.3 }); }});
-                }
-            },
+                    const cooldownDuration = 2.5; // Cooldown time in seconds
+                    const bubbleCount = 20; // Number of bubbles to generate
+
+                    if (btn.disabled) return;
+
+                    App.state.reasonClickCount++;
+                    if (App.state.reasonClickCount === 5) {
+                        this.triggerTheTruth();
+                        return;
+                    }
+                    if (App.state.reasonsPool.length === 0) {
+                        App.state.reasonsPool = [...CONFIG.reasons];
+                        App.state.reasonsPool.sort(() => Math.random() - 0.5);
+                    }
+                    const reason = App.state.reasonsPool.pop();
+                    gsap.to(textEl, {
+                        opacity: 0,
+                        y: -20,
+                        duration: 0.3,
+                        ease: 'power2.in',
+                        onComplete: () => {
+                            textEl.textContent = `...${reason}`;
+                            gsap.to(textEl, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' });
+                        }
+                    });
+
+                    // --- NEW "WATERY VISUALS" ANIMATION ---
+                    btn.disabled = true;
+                    const btnRect = btn.getBoundingClientRect();
+                    const bubbles = [];
+
+                    // Temporarily change button background to a watery blue
+                    gsap.to(btn, { backgroundColor: '#0f3460', duration: 0.3 });
+
+                    for (let i = 0; i < bubbleCount; i++) {
+                        const bubble = document.createElement('div');
+                        bubble.className = 'cooldown-blob';
+                        btn.appendChild(bubble);
+                        bubbles.push(bubble);
+                    }
+
+                    const tl = gsap.timeline({
+                        onComplete: () => {
+                            btn.disabled = false;
+                            bubbles.forEach(bubble => bubble.remove());
+                            // Return button to original accent color
+                            gsap.to(btn, { backgroundColor: 'var(--accent-color)', duration: 0.5 });
+                        }
+                    });
+
+                    // Animate the bubbles rising
+                    tl.to(bubbles, {
+                        // Bubbles float up and out of the button
+                        y: () => -btnRect.height - 50,
+                        
+                        // Start with a random scale
+                        scale: () => gsap.utils.random(0.8, 1.5),
+                        
+                        // Add a horizontal wobble/drift
+                        x: () => `+=${gsap.utils.random(-btnRect.width * 0.4, btnRect.width * 0.4)}`,
+                        
+                        // Opacity fades as they rise
+                        opacity: 0,
+                        
+                        // Random duration for a more natural effect
+                        duration: () => gsap.utils.random(1.5, cooldownDuration),
+                        
+                        // Stagger their start times randomly
+                        stagger: {
+                            each: 0.08,
+                            from: "random"
+                        },
+                        ease: "power1.out"
+                    });
+                },
+                
+                triggerTheTruth() {
+                    const btn = App.elements.newReasonBtn;
+                    btn.disabled = true; 
+                    
+                    gsap.to(btn, {
+                        opacity: 0,
+                        scale: 0.8,
+                        duration: 0.4,
+                        ease: 'back.in(1.7)',
+                        onComplete: () => {
+                            btn.innerHTML = 'wanna know the truth❓';
+                            btn.onclick = () => {
+                                btn.onclick = null; 
+                                App.Celebration.startTheTruthSequence();
+                            };
+                            btn.disabled = false; 
+                            gsap.to(btn, { opacity: 1, scale: 1, duration: 0.4, ease: 'back.out(1.7)' });
+                        }
+                    });
+                },
+
+            }, 
 
             Audio: {
                 playIconPath: "M8 5v14l11-7z",
                 pauseIconPath: "M6 19h4V5H6v14zm8-14v14h4V5h-4z",
+                
                 setupMusicPlayer() {
                     const { playlist } = CONFIG;
                     if (!playlist || playlist.length === 0) { App.elements.playlistSection.style.display = 'none'; return; }
@@ -1494,6 +2108,7 @@
                     App.elements.audio.player.addEventListener('timeupdate', (e) => this.updateProgress(e));
                     App.elements.audio.progressContainer.addEventListener('click', (e) => this.setProgress(e));
                 },
+
                 initAudioVisualizer() {
                     if (App.state.playlist.audioContext) return;
                     const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -1542,6 +2157,7 @@
                     }
                     draw();
                 },
+
                 loadTrack(index) {
                     const track = App.state.playlist.data[index];
                     App.elements.audio.trackTitle.textContent = track.title;
@@ -1549,10 +2165,12 @@
                     App.elements.audio.trackArt.style.backgroundImage = `url('${track.art}')`;
                     App.elements.audio.player.src = track.src;
                 },
+
                 togglePlayPause() {
                     if (App.state.playlist.audioContext && App.state.playlist.audioContext.state === 'suspended') { App.state.playlist.audioContext.resume(); }
                     App.state.playlist.isPlaying ? this.pauseTrack() : this.playTrack();
                 },
+
                 playTrack() {
                     App.elements.audio.player.play();
                     App.elements.audio.playPauseIcon.querySelector('path').setAttribute('d', this.pauseIconPath);
@@ -1560,27 +2178,32 @@
                     App.state.playlist.isPlaying = true;
                     if (!App.state.playlist.audioContext) { this.initAudioVisualizer(); }
                 },
+
                 pauseTrack() {
                     App.elements.audio.player.pause();
                     App.elements.audio.playPauseIcon.querySelector('path').setAttribute('d', this.playIconPath);
                     document.querySelector('.music-player').classList.remove('is-playing');
                     App.state.playlist.isPlaying = false;
                 },
+
                 playPrev() {
                     const len = App.state.playlist.data.length;
                     App.state.playlist.currentIndex = (App.state.playlist.currentIndex - 1 + len) % len;
                     this.loadTrack(App.state.playlist.currentIndex);
                     this.playTrack();
                 },
+
                 playNext() {
                     App.state.playlist.currentIndex = (App.state.playlist.currentIndex + 1) % App.state.playlist.data.length;
                     this.loadTrack(App.state.playlist.currentIndex);
                     this.playTrack();
                 },
+
                 updateProgress(e) {
                     const { duration, currentTime } = e.srcElement;
                     if (duration) { App.elements.audio.progressBar.style.width = `${(currentTime / duration) * 100}%`; }
                 },
+
                 setProgress(e) {
                     const width = App.elements.audio.progressContainer.clientWidth;
                     const clickX = e.offsetX;
@@ -1598,10 +2221,12 @@
                     const loadingDuration = 4;
 
                     document.body.classList.add('no-scroll');
-                    gsap.set([loaderText, loaderProgress, ecgContainer], { opacity: 0 });
+                    gsap.set([loaderText, loaderProgress, ecgContainer, preloaderHeart], { opacity: 0 });
+                    gsap.set(playButton, {opacity: 1}); // Make sure play button is visible
+                    gsap.set(preloaderHeart, {opacity: 1}); // Keep heart visible but will be animated in
 
                     playButton.addEventListener('click', () => {
-                        gsap.to(playButton, { opacity: 0, duration: 0.3, onComplete: () => { playButton.style.display = 'none'; } });
+                        gsap.to(playButton, { opacity: 0, scale: 0, duration: 0.3, onComplete: () => { playButton.style.display = 'none'; } });
                         heartbeatAudio.play().catch(e => {
                             console.error("Audio playback failed:", e);
                             loaderText.textContent = "Audio unavailable, but we're still preparing!";
@@ -1643,8 +2268,9 @@
                         App.state.preloaderTimeline.add(ecgLoop, 0.5);
 
                         setTimeout(() => { App.state.preloaderTimeline.progress(1); }, loadingDuration * 1000 + 500);
-                    });
+                    }, { once: true });
                 },
+
                 initMainPageAnimations() {
                     gsap.to(App.elements.contentWrapper, { visibility: 'visible', duration: 0 });
                     const mainHeading = App.elements.mainHeading;
@@ -1681,28 +2307,359 @@
                     });
                 }
             },
-
+            
             Celebration: {
+                // --- MODIFIED: Start initial celebration and show play button ---
                 start() {
-                    console.log("Starting birthday celebration! 🎉");
+                    console.log("Starting initial birthday celebration! 🎉");
                     if (typeof confetti === 'undefined') { console.error("Confetti library not loaded."); return; }
-                    const duration = 15 * 1000;
+                    
+                    // Initial grand confetti burst
+                    const duration = 5 * 1000;
                     const animationEnd = Date.now() + duration;
                     const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 1000 };
                     function randomInRange(min, max) { return Math.random() * (max - min) + min; }
                     const interval = setInterval(function() {
-                      const timeLeft = animationEnd - Date.now();
-                      if (timeLeft <= 0) return clearInterval(interval);
-                      const particleCount = 50 * (timeLeft / duration);
-                      confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } });
-                      confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } });
+                        const timeLeft = animationEnd - Date.now();
+                        if (timeLeft <= 0) {
+                            clearInterval(interval);
+                            // After initial confetti, show the play button
+                            const playBtn = App.elements.celebration.playBtn;
+                            playBtn.style.display = 'flex';
+                            gsap.to(playBtn, { opacity: 1, scale: 1, duration: 0.8, ease: 'elastic.out(1, 0.3)' });
+                            return;
+                        }
+                        const particleCount = 50 * (timeLeft / duration);
+                        confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } });
+                        confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } });
                     }, 250);
+                },
+
+                // --- NEW: Start the main celebration with music and balloons ---
+                startMassCelebration() {
+                    console.log("Starting MASS celebration! 🎈🎵");
+                    App.state.isCelebrationActive = true;
+                    
+                    const playBtn = App.elements.celebration.playBtn;
+                    gsap.to(playBtn, { opacity: 0, scale: 0.8, duration: 0.5, ease: 'back.in(1.7)', onComplete: () => playBtn.style.display = 'none' });
+
+                    // Play celebration music
+                    const audioPlayer = App.elements.celebration.audioPlayer;
+                    audioPlayer.src = CONFIG.celebration.song;
+                    audioPlayer.play().catch(e => console.error("Celebration audio failed to play:", e));
+
+                    // Start spawning balloons
+                    setInterval(() => {
+                        if (App.state.isCelebrationActive) {
+                            App.UI.createBalloonParticle();
+                        }
+                    }, 800); // Spawn a new balloon every 0.8 seconds
+                },
+
+                // --- NEW: Preload pop sounds for instant feedback ---
+                preloadPopSounds() {
+                    const container = App.elements.celebration.popSoundsContainer;
+                    CONFIG.celebration.popSounds.forEach(src => {
+                        const audio = new Audio();
+                        audio.src = src;
+                        audio.preload = "auto";
+                        App.state.popSoundPlayers.push(audio);
+                        container.appendChild(audio);
+                    });
+                },
+
+                // --- NEW: Handle popping a balloon ---
+                handleBalloonPop(balloonElement) {
+                    if (!balloonElement) return;
+
+                    // 1. Play Sound
+                    const soundPlayers = App.state.popSoundPlayers;
+                    if (soundPlayers.length > 0) {
+                        soundPlayers[App.state.popSoundIndex].currentTime = 0;
+                        soundPlayers[App.state.popSoundIndex].play();
+                        App.state.popSoundIndex = (App.state.popSoundIndex + 1) % soundPlayers.length;
+                    }
+
+                    // 2. Confetti Burst
+                    const rect = balloonElement.getBoundingClientRect();
+                    const origin = {
+                        x: (rect.left + rect.width / 2) / window.innerWidth,
+                        y: (rect.top + rect.height / 2) / window.innerHeight
+                    };
+                    confetti({
+                        particleCount: 50,
+                        spread: 60,
+                        origin: origin,
+                        zIndex: 1002
+                    });
+
+                    // 3. Visual Pop and Removal
+                    gsap.to(balloonElement, {
+                        scale: 1.5,
+                        opacity: 0,
+                        duration: 0.2,
+                        ease: 'power2.in',
+                        onComplete: () => balloonElement.remove()
+                    });
+                },
+
+                startTheTruthSequence() {
+                    const overlay = document.getElementById('truth-overlay');
+                    const truthCanvas = document.getElementById('truth-text-canvas');
+                    const cancelBtn = document.getElementById('truth-cancel-btn');
+                    const btn = App.elements.newReasonBtn;
+
+                    btn.disabled = true;
+                    btn.onclick = null;
+                    
+                    overlay.style.display = 'block';
+                    overlay.style.pointerEvents = 'all'; 
+
+                    gsap.to(overlay, {
+                        opacity: 1,
+                        duration: 1,
+                        onStart: () => {
+                            overlay.classList.add('visible');
+                            document.body.classList.add('no-scroll');
+                        },
+                        onComplete: showFirstBalloon
+                    });
+
+                    function showFirstBalloon() {
+                        const balloon = document.createElement('div');
+                        balloon.className = 'rainbow-balloon';
+                        overlay.appendChild(balloon);
+
+                        gsap.to(balloon, {
+                            y: -(window.innerHeight / 2) - 130,
+                            duration: 4,
+                            ease: 'power1.out',
+                            onComplete: () => {
+                                gsap.to(balloon, { y: '+=20', rotation: 5, yoyo: true, repeat: -1, duration: 2, ease: 'sine.inOut' });
+                                balloon.addEventListener('click', popFirstBalloon, { once: true });
+                            }
+                        });
+                    }
+
+                    function popFirstBalloon(event) {
+                        const balloon = event.currentTarget;
+                        const rect = balloon.getBoundingClientRect();
+
+                        confetti({
+                            particleCount: 150,
+                            spread: 90,
+                            zIndex:10006,
+                            origin: { x: (rect.left + rect.width / 2) / window.innerWidth, y: (rect.top + rect.height / 2) / window.innerHeight },
+                            colors: ['#ff0000', '#ff7f00', '#ffff00', '#00ff00', '#0000ff', '#4b0082', '#8b00ff']
+                        });
+
+                        gsap.to(balloon, {
+                            scale: 1.5,
+                            opacity: 0,
+                            duration: 0.3,
+                            ease: 'power1.in',
+                            onComplete: () => {
+                                balloon.remove();
+                                showLiquidText();
+                            }
+                        });
+                    }
+
+                    function showLiquidText() {
+                        const text = "The Truth: True love needs no reason for it to flow😌💞";
+                        truthCanvas.style.display = 'block';
+                        const ctx = truthCanvas.getContext('2d');
+                        truthCanvas.width = window.innerWidth;
+                        truthCanvas.height = window.innerHeight;
+
+                        gsap.to(truthCanvas, {
+                            opacity: 1,
+                            duration: 1,
+                            onStart: () => {
+                                ctx.font = 'bold 4vw ' + getComputedStyle(document.documentElement).getPropertyValue('--font-creative').trim();
+                                ctx.textAlign = 'center';
+                                ctx.textBaseline = 'middle';
+                                const gradient = ctx.createLinearGradient(0, 0, truthCanvas.width, 0);
+                                gradient.addColorStop(0, '#FC7F03');
+                                gradient.addColorStop(0.5, '#ff4081');
+                                gradient.addColorStop(1, '#e94560');
+                                ctx.fillStyle = gradient;
+                                ctx.shadowColor = 'rgba(255, 255, 255, 0.7)';
+                                ctx.shadowBlur = 20;
+                                ctx.fillText(text, truthCanvas.width / 2, truthCanvas.height / 2);
+                            },
+                            onComplete: () => {
+                                cancelBtn.style.display = 'block';
+                                gsap.to(cancelBtn, { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(1.7)' });
+                                cancelBtn.onclick = cancelAndProceed;
+                            }
+                        });
+                    }
+
+                    function cancelAndProceed() {
+                        gsap.to([truthCanvas, cancelBtn], { opacity: 0, duration: 0.5, onComplete: () => {
+                            truthCanvas.style.display = 'none';
+                            cancelBtn.style.display = 'none';
+                            startThreeBalloons();
+                        }});
+                    }
+
+                    function startThreeBalloons() {
+                        const words = [
+                            { id: '#word-i', text: 'I' }, 
+                            { id: '#word-lubhh', text: 'Lubhh💞' },
+                            { id: '#word-booh', text: 'Booh🫵🏼' }
+                        ];
+                        let currentBalloonIndex = 0;
+
+                        function showNextBalloon() {
+                            if (currentBalloonIndex >= words.length) {
+                                finalCinematicMerge();
+                                return;
+                            }
+                            
+                            const balloon = document.createElement('div');
+                            balloon.className = 'rainbow-balloon';
+                            balloon.style.width = '150px';
+                            balloon.style.height = '195px';
+                            const balloonPositions = ['25%', '50%', '75%'];
+                            balloon.style.left = balloonPositions[currentBalloonIndex];
+                            overlay.appendChild(balloon);
+
+                            gsap.to(balloon, {
+                                y: - (window.innerHeight / 2) - 100,
+                                duration: 3,
+                                ease: 'power1.out',
+                                onComplete: () => {
+                                    gsap.to(balloon, { y: '+=15', yoyo: true, repeat: -1, duration: 1.8, ease: 'sine.inOut' });
+                                    balloon.addEventListener('click', (e) => {
+                                        popSingleBalloon(e, words[currentBalloonIndex].id, showNextBalloon);
+                                        currentBalloonIndex++;
+                                    }, { once: true });
+                                }
+                            });
+                        }
+                        
+                        showNextBalloon();
+                    }
+
+                    function popSingleBalloon(event, wordId, callback) {
+                        const balloon = event.currentTarget;
+                        const wordEl = document.querySelector(wordId);
+                        const rect = balloon.getBoundingClientRect();
+                        
+                        confetti({ particleCount: 50,zIndex:10006,spread: 60, origin: { x: (rect.left + rect.width/2) / window.innerWidth, y: (rect.top + rect.height/2) / window.innerHeight }});
+                        gsap.to(balloon, { scale: 1.5, opacity: 0, duration: 0.3, onComplete: () => balloon.remove() });
+
+                        let offsetX = 0;
+                        let offsetY = 0; 
+                        switch (wordId) {
+                            case '#word-i':
+                                offsetX = 10;
+                                offsetY = -40;
+                                break;
+                            case '#word-lubhh':
+                                offsetX = 20;
+                                offsetY = -30;
+                                break;
+                            case '#word-booh':
+                                offsetX = 30;
+                                offsetY = -50;
+                                break;
+                        }
+
+                        gsap.set(wordEl, { 
+                            top: `${rect.top + rect.height / 2 + offsetY}px`,
+                            left: `${rect.left + rect.width / 2 + offsetX}px`
+                        });
+
+                        gsap.to(wordEl, { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(1.7)' });
+                        
+                        if (callback) {
+                            setTimeout(callback, 500);
+                        }
+                    }
+
+                    function finalCinematicMerge() {
+                        const wordI = document.querySelector('#word-i');
+                        const wordLubhh = document.querySelector('#word-lubhh');
+                        const wordBooh = document.querySelector('#word-booh');
+
+                        gsap.timeline({ onComplete: finalCelebration })
+                            .to(wordI, {
+                                left: '50%',
+                                top: '30vh',
+                                duration: 1.5,
+                                ease: 'back.inOut(1.7)'
+                            }, "<")
+                            .to(wordLubhh, {
+                                left: '50%',
+                                top: '52vh',
+                                duration: 1.5,
+                                ease: 'back.inOut(1.7)'
+                            }, "<")
+                            .to(wordBooh, {
+                                left: '50%',
+                                top: '74vh',
+                                duration: 1.5,
+                                ease: 'back.inOut(1.7)'
+                            }, "<")
+                            .to([wordI, wordLubhh, wordBooh], {
+                                 scale: 1.5,
+                                 textShadow: '0 0 30px #ff4081, 0 0 50px #FC7F03',
+                                 duration: 1,
+                                 ease: 'elastic.out(1, 0.5)'
+                            });
+                    }
+
+                    function finalCelebration() {
+                        const duration = 5 * 1000;
+                        const end = Date.now() + duration;
+
+                        (function frame() {
+                            confetti({
+                                particleCount: 5,zIndex:10006,angle: 60, spread: 55, origin: { x: 0 },
+                                colors: ['#FC7F03', '#ff4081', '#ffffff']
+                            });
+                            confetti({
+                                particleCount: 5, angle: 120, spread: 55, origin: { x: 1 },
+                                colors: ['#FC7F03', '#ff4081', '#ffffff']
+                            });
+                            if (Date.now() < end) {
+                                requestAnimationFrame(frame);
+                            } else {
+                                gsap.to(['#word-i', '#word-lubhh', '#word-booh'], {
+                                    opacity: 0,
+                                    scale: 0,
+                                    duration: 0.5,
+                                    onComplete: function() {
+                                        gsap.set(['#word-i', '#word-lubhh', '#word-booh'], {
+                                            top: '50%',
+                                            left: '50%',
+                                            transform: 'translate(-50%, -50%) scale(0)'
+                                        });
+                                    }
+                                }),
+                                gsap.to('#truth-overlay', {
+                                    opacity: 0,
+                                    duration: 2,
+                                    onComplete: () => {
+                                        document.getElementById('truth-overlay').style.display = 'none';
+                                        document.body.classList.remove('no-scroll');
+                                        App.Content.setupReasonsGenerator(); 
+                                        App.elements.newReasonBtn.innerHTML = 'Show Me Another';
+                                        App.elements.newReasonBtn.onclick = () => App.Content.generateNewReason();
+                                        App.elements.newReasonBtn.disabled = false;
+                                    }
+                                });
+                            }
+                        }());
+                    }
                 }
             }
         };
-
         App.init();
-        
+
         (function() {
             const tracker = document.getElementById("scroll-progress-bar");
             let hideTimeout;
@@ -1723,6 +2680,9 @@
         })();
     });
     </script>
-
 </body>
 </html>
+
+
+
+
